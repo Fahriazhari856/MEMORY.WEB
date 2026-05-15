@@ -10,174 +10,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
-    <style>
-        /* ==================== DYNAMIC DESIGN SYSTEM ==================== */
-        :root {
-            /* Light Theme Variables */
-            --bg-main: #FDFBF7;
-            --bg-card: #FFFFFF;
-            --bg-nav: rgba(253, 251, 247, 0.85);
-            --accent-coral: #E67E5F;
-            --text-main: #1A1A1A;
-            --text-muted: #6B7280;
-            --border-color: rgba(0, 0, 0, 0.08);
-            
-            /* Gradient Waves (Light) */
-            --wave-1: #FDFBF7;
-            --wave-2: #fdf1ed;
-            --wave-3: #fcece6;
-
-            /* Cinematic Transition Easing */
-            --cine-ease: cubic-bezier(0.645, 0.045, 0.355, 1);
-        }
-
-        .dark-theme {
-            /* Soft Dark Theme Variables */
-            --bg-main: #18181b; 
-            --bg-card: #27272a; 
-            --bg-nav: rgba(24, 24, 27, 0.85);
-            --text-main: #F4F4F5;
-            --text-muted: #A1A1AA;
-            --border-color: rgba(255, 255, 255, 0.05);
-
-            /* Gradient Waves (Dark) */
-            --wave-1: #18181b;
-            --wave-2: #211c1a;
-            --wave-3: #2a1f1c;
-        }
-
-        /* View Transitions API */
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation: none;
-            mix-blend-mode: normal;
-        }
-        ::view-transition-new(root) { z-index: 9999; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-            transition: background-color 1s var(--cine-ease), color 1s var(--cine-ease);
-        }
-
-        .font-serif { font-family: 'DM Serif Display', serif; }
-
-        /* ==================== ANIMATED WAVE GRADIENT ==================== */
-        .hero-animated-bg {
-            background: linear-gradient(-45deg, var(--wave-1), var(--wave-2), var(--wave-1), var(--wave-3));
-            background-size: 400% 400%;
-            animation: gradientWave 15s ease infinite;
-            transition: background 1s var(--cine-ease);
-        }
-
-        @keyframes gradientWave {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* ==================== FLOATING EFFECT (HANGING CARDS) ==================== */
-        .floating-wind { animation: floatingWind 6s ease-in-out infinite; }
-        .floating-wind-delayed { animation: floatingWind 8s ease-in-out infinite; animation-delay: -2s; }
-        
-        .animate-float-slow { animation: floatVertical 8s ease-in-out infinite; }
-        .animate-float-medium { animation: floatVertical 6s ease-in-out infinite; }
-        .animate-float-fast { animation: floatVertical 4s ease-in-out infinite; }
-        
-        @keyframes floatVertical {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        @keyframes floatingWind {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(12px, -18px) rotate(1.5deg); }
-            66% { transform: translate(-8px, -28px) rotate(-1deg); }
-        }
-
-        .mask-bottom-fade {
-            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-        }
-
-        /* Utilities */
-        .text-highlight { position: relative; z-index: 1; }
-        .text-highlight::after {
-            content: ''; position: absolute; left: 0; bottom: 10%; width: 105%; height: 30%;
-            background-color: rgba(230, 126, 95, 0.2); z-index: -1; transform: rotate(-1deg); border-radius: 2px;
-        }
-
-        .nav-blur {
-            background: var(--bg-nav) !important;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            transition: background-color 1s var(--cine-ease), border-color 1s var(--cine-ease);
-        }
-
-        /* Scrollbars */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; scroll-behavior: smooth; }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent-coral); }
-
-        /* Marquee */
-        .marquee-container {
-            display: flex; overflow: hidden; user-select: none;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-        .marquee-content { 
-            display: flex; flex-shrink: 0; gap: 2rem; padding-right: 2rem;
-            animation: scroll-left 40s linear infinite; 
-        }
-        .marquee-container:hover .marquee-content { animation-play-state: paused; }
-        @keyframes scroll-left {
-            from { transform: translateX(0); }
-            to { transform: translateX(-100%); }
-        }
-
-        .testimonial-card {
-            width: 420px; flex-shrink: 0; background: var(--bg-card); padding: 2.5rem; border-radius: 2rem;
-            border: 1px solid var(--border-color); transition: transform 0.4s ease, border-color 1s var(--cine-ease), background-color 1s var(--cine-ease);
-        }
-        .testimonial-card:hover { border-color: var(--accent-coral); transform: translateY(-8px); }
-
-        /* Masonry Grid Fixes */
-        .masonry-grid { column-count: 1; column-gap: 1.5rem; }
-        @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
-        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-        .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; display: inline-block; width: 100%; }
-
-        /* Pricing Cards */
-        .pricing-card { transition: transform 0.4s ease, border-color 1s var(--cine-ease), background-color 1s var(--cine-ease); }
-        .pricing-card:hover { transform: translateY(-5px); }
-        .pricing-card.popular { border: 2px solid var(--accent-coral); box-shadow: 0 10px 40px rgba(230, 126, 95, 0.15); }
-    </style>
 </head>
 <body>
 
-    <!-- Navigasi -->
     <nav id="main-nav" class="fixed top-0 w-full z-[100] transition-all duration-500 py-6">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3 group">
+            <a href="#" class="flex items-center gap-3 group z-[110]">
                 <div class="w-10 h-10 bg-[var(--accent-coral)] rounded-full flex items-center justify-center text-white transition-transform group-hover:rotate-12">
                     <i class="fas fa-camera"></i>
                 </div>
                 <span class="text-xl font-extrabold tracking-tighter uppercase text-[var(--text-main)] transition-colors duration-1000">Memory<span class="text-[var(--accent-coral)]">.</span></span>
             </a>
+            
             <div class="hidden md:flex items-center gap-8 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">
                 <a href="#home" class="hover:text-[var(--accent-coral)] transition-colors">Home</a>
                 <a href="#portfolio" class="hover:text-[var(--accent-coral)] transition-colors">Portofolio</a>
                 <a href="#pricing" class="hover:text-[var(--accent-coral)] transition-colors">Harga</a>
                 <a href="#testimonials" class="hover:text-[var(--accent-coral)] transition-colors">Komentar</a>
                 
-                <!-- Toggle Theme Button -->
                 <button id="theme-toggle" class="w-10 h-10 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-main)] hover:bg-[var(--text-main)] hover:text-[var(--bg-main)] transition-all overflow-hidden relative group">
                     <div class="absolute inset-0 bg-[var(--text-main)] opacity-0 group-hover:opacity-10 transition-opacity"></div>
                     <i id="theme-icon" class="fas fa-moon relative z-10 transition-transform duration-500"></i>
@@ -185,29 +37,44 @@
                 
                 <button class="bg-[var(--accent-coral)] text-white px-8 py-3 rounded-full hover:opacity-90 hover:shadow-xl transition-all">Book A Session</button>
             </div>
-            <button class="md:hidden text-2xl text-[var(--text-main)] focus:outline-none"><i class="fas fa-bars-staggered"></i></button>
+
+            <div class="flex items-center gap-3 md:hidden z-[110]">
+                <button id="theme-toggle-mobile" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-main)] transition-all">
+                    <i id="theme-icon-mobile" class="fas fa-moon text-sm"></i>
+                </button>
+                <button id="mobile-menu-btn" class="text-xl text-[var(--text-main)] focus:outline-none transition-transform">
+                    <i class="fas fa-bars-staggered"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <div id="mobile-menu" class="fixed inset-0 bg-[var(--bg-main)] z-[105] hidden flex-col items-center justify-center gap-8 opacity-0 transition-all duration-300">
+        <a href="#home" class="mobile-link text-2xl font-bold text-[var(--text-main)] hover:text-[var(--accent-coral)] transition-colors">Home</a>
+        <a href="#portfolio" class="mobile-link text-2xl font-bold text-[var(--text-main)] hover:text-[var(--accent-coral)] transition-colors">Portofolio</a>
+        <a href="#pricing" class="mobile-link text-2xl font-bold text-[var(--text-main)] hover:text-[var(--accent-coral)] transition-colors">Harga</a>
+        <a href="#testimonials" class="mobile-link text-2xl font-bold text-[var(--text-main)] hover:text-[var(--accent-coral)] transition-colors">Komentar</a>
+        <button class="mobile-link bg-[var(--accent-coral)] text-white px-10 py-4 rounded-full font-bold mt-4 shadow-lg">Book A Session</button>
+    </div>
+
     <section id="home" class="min-h-screen pt-32 pb-20 px-6 flex items-center hero-animated-bg border-b border-[var(--border-color)]">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16 items-center">
-            <div class="lg:col-span-6 hero-content">
+            <div class="lg:col-span-6 hero-content text-center lg:text-left">
                 <h6 class="text-[var(--accent-coral)] font-bold uppercase tracking-[0.4em] text-xs mb-6 block">Professional Storyteller</h6>
                 <h1 class="text-6xl md:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-8 text-[var(--text-main)] transition-colors duration-1000">
                     Abadikan <br> 
-                    <span class="font-serif italic font-normal text-highlight">Momen</span> <br>
+                    <span class="font-serif italic font-normal text-highlight mt-2 lg:mt-0">Momen</span> <br>
                     Terbaik Anda.
                 </h1>
-                <p class="text-[var(--text-muted)] text-lg mb-10 max-w-lg leading-relaxed font-medium transition-colors duration-1000">
+                <p class="text-[var(--text-muted)] text-lg mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium transition-colors duration-1000">
                     Kami menangkap emosi, bukan sekadar gambar. Spesialis Wisuda, Pre-Wedding, dan Dokumentasi Event Premium dengan sentuhan estetik yang lembut.
                 </p>
-                <div class="flex flex-wrap gap-5">
-                    <a href="#portfolio" class="bg-[var(--text-main)] text-[var(--bg-main)] px-10 py-5 rounded-full font-bold hover:bg-[var(--accent-coral)] hover:text-white transition-all">Eksplorasi Galeri</a>
+                <div class="flex flex-wrap justify-center lg:justify-start gap-5">
+                    <a href="#portfolio" class="bg-[var(--text-main)] text-[var(--bg-main)] px-10 py-5 rounded-full font-bold hover:bg-[var(--accent-coral)] hover:text-white transition-all shadow-lg hover:-translate-y-1">Eksplorasi Galeri</a>
                 </div>
             </div>
-            <div class="lg:col-span-6 relative flex justify-center items-center">
-                <div class="relative w-full flex gap-6 items-end">
+            <div class="lg:col-span-6 relative flex justify-center items-center mt-10 lg:mt-0">
+                <div class="relative w-full max-w-[500px] flex gap-6 items-end justify-center">
                     <div class="floating-wind w-2/3 shadow-2xl rounded-[3rem] overflow-hidden bg-[var(--bg-card)] p-2 border border-[var(--border-color)] transition-colors duration-1000">
                         <img src="https://i1-c.pinimg.com/1200x/d2/ae/25/d2ae2545aa201519234660dd11337bc8.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800';" class="w-full h-auto rounded-[2.8rem]" alt="Momen Wedding Utama">
                         <div class="p-8 bg-[var(--bg-card)] flex items-center gap-4 transition-colors duration-1000">
@@ -223,69 +90,53 @@
         </div>
     </section>
 
-    <!-- MAIN PORTFOLIO SECTION (HANGING GRID LAYOUT) -->
     <section id="portfolio" class="pt-24 pb-32 px-6 bg-[var(--bg-main)] transition-colors duration-1000 border-b border-[var(--border-color)] relative">
         <div class="max-w-7xl mx-auto flex flex-col items-center">
             
-            <!-- Hanging Pictures Grid with Direct Links to Galleries -->
-            <div class="relative w-full h-[450px] md:h-[500px] overflow-hidden flex justify-center items-start gap-4 md:gap-6 mb-8 mask-bottom-fade">
+            <div class="relative w-full h-[450px] md:h-[500px] overflow-hidden flex justify-center items-start gap-4 md:gap-6 mb-8 mask-bottom-fade pointer-events-none">
                 
-                <!-- Col 1 -->
-                <div class="flex flex-col gap-4 md:gap-6 pt-10 animate-float-medium portfolio-grid-col">
-                    <div onclick="openGalleryModal('Wedding', 'Kumpulan karya dokumentasi pernikahan dengan sentuhan magis dan puitis.', 'wedding')" class="w-24 md:w-36 h-32 md:h-48 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://i1-c.pinimg.com/736x/da/4e/d7/da4ed7d6f071ba12b55b6be5097856b9.jpg" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Wedding">
+                <div class="flex flex-col gap-4 md:gap-6 pt-10 animate-float-medium">
+                    <div class="w-24 md:w-36 h-32 md:h-48 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] relative">
+                        <img src="https://i1-c.pinimg.com/736x/da/4e/d7/da4ed7d6f071ba12b55b6be5097856b9.jpg" class="w-full h-full object-cover" alt="Wedding">
                     </div>
-                    <div onclick="openGalleryModal('Pre-Wedding', 'Eksplorasi lokasi memukau untuk menceritakan kisah cinta Anda sebelum hari H.', 'prewedding')" class="w-24 md:w-36 h-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://i1-c.pinimg.com/736x/da/4e/d7/da4ed7d6f071ba12b55b6be5097856b9.jpg" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Pre-Wedding">
+                    <div class="w-24 md:w-36 h-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] relative">
+                        <img src="https://i1-c.pinimg.com/736x/da/4e/d7/da4ed7d6f071ba12b55b6be5097856b9.jpg" class="w-full h-full object-cover" alt="Pre-Wedding">
                     </div>
                 </div>
                 
-                <!-- Col 2 -->
-                <div class="flex flex-col gap-4 md:gap-6 pt-0 animate-float-slow portfolio-grid-col" style="animation-delay: -1s;">
-                    <div onclick="openGalleryModal('Graduation', 'Gaya elegan dan editorial untuk merayakan pencapaian akademik Anda.', 'graduation')" class="w-28 md:w-44 h-40 md:h-64 rounded-[1.5rem] overflow-hidden shadow-xl border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://i.pinimg.com/736x/d3/8c/47/d38c470bde0d4649d650f03b1bbca555.jpg" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Graduation">
+                <div class="flex flex-col gap-4 md:gap-6 pt-0 animate-float-slow" style="animation-delay: -1s;">
+                    <div class="w-28 md:w-44 h-40 md:h-64 rounded-[1.5rem] overflow-hidden shadow-xl border border-[var(--border-color)] relative">
+                        <img src="https://i.pinimg.com/736x/d3/8c/47/d38c470bde0d4649d650f03b1bbca555.jpg" class="w-full h-full object-cover" alt="Graduation">
                     </div>
-                    <div onclick="openGalleryModal('Event Corporate', 'Dokumentasi acara resmi, gala dinner, dan peluncuran produk.', 'event')" class="w-28 md:w-44 h-32 md:h-40 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://i.pinimg.com/736x/1b/b2/14/1bb21464034fba1fedf91da5415b45c0.jpg" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Event">
+                    <div class="w-28 md:w-44 h-32 md:h-40 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] relative">
+                        <img src="https://i.pinimg.com/736x/1b/b2/14/1bb21464034fba1fedf91da5415b45c0.jpg" class="w-full h-full object-cover" alt="Event">
                     </div>
                 </div>
                 
-                <!-- Col 3 (Center Main) -->
-                <div class="flex flex-col gap-4 md:gap-6 pt-16 animate-float-fast portfolio-grid-col">
-                    <div onclick="openGalleryModal('Wedding', 'Kumpulan karya dokumentasi pernikahan dengan sentuhan magis dan puitis.', 'wedding')" class="w-36 md:w-56 h-56 md:h-80 rounded-[2rem] overflow-hidden shadow-2xl border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Wedding Main">
+                <div class="flex flex-col gap-4 md:gap-6 pt-16 animate-float-fast">
+                    <div class="w-36 md:w-56 h-56 md:h-80 rounded-[2rem] overflow-hidden shadow-2xl border border-[var(--border-color)] relative">
+                        <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover" alt="Wedding Main">
                     </div>
                 </div>
                 
-                <!-- Col 4 -->
-                <div class="flex flex-col gap-4 md:gap-6 pt-6 animate-float-medium portfolio-grid-col" style="animation-delay: -2s;">
-                    <div onclick="openGalleryModal('Pre-Wedding', 'Eksplorasi lokasi memukau untuk menceritakan kisah cinta Anda sebelum hari H.', 'prewedding')" class="w-28 md:w-44 h-32 md:h-48 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://i.pinimg.com/736x/1b/b2/14/1bb21464034fba1fedf91da5415b45c0.jpg" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Pre Wedding">
+                <div class="flex flex-col gap-4 md:gap-6 pt-6 animate-float-medium" style="animation-delay: -2s;">
+                    <div class="w-28 md:w-44 h-32 md:h-48 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] relative">
+                        <img src="https://i.pinimg.com/736x/1b/b2/14/1bb21464034fba1fedf91da5415b45c0.jpg" class="w-full h-full object-cover" alt="Pre Wedding">
                     </div>
-                    <div onclick="openGalleryModal('Graduation', 'Gaya elegan dan editorial untuk merayakan pencapaian akademik Anda.', 'graduation')" class="w-28 md:w-44 h-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Graduation">
+                    <div class="w-28 md:w-44 h-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] relative">
+                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover" alt="Graduation">
                     </div>
                 </div>
                 
-                <!-- Col 5 -->
-                <div class="flex flex-col gap-4 md:gap-6 pt-20 animate-float-slow hidden md:flex portfolio-grid-col" style="animation-delay: -1.5s;">
-                    <div onclick="openGalleryModal('Event Corporate', 'Dokumentasi acara resmi, gala dinner, dan peluncuran produk.', 'event')" class="w-24 md:w-36 h-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] cursor-pointer group relative">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" alt="Event">
+                <div class="flex flex-col gap-4 md:gap-6 pt-20 animate-float-slow hidden md:flex" style="animation-delay: -1.5s;">
+                    <div class="w-24 md:w-36 h-40 md:h-56 rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] relative">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover" alt="Event">
                     </div>
                 </div>
             </div>
 
-            <!-- Text & CTA Button -->
-            <div class="text-center relative z-20 -mt-16 md:-mt-20 portfolio-header">
-                <span class="inline-block py-1.5 px-4 rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-main)] text-[10px] font-black uppercase tracking-widest mb-6 transition-colors duration-1000 shadow-sm">Karya Portofolio</span>
+            <div class="text-center relative z-20 -mt-16 md:-mt-20 portfolio-header px-4">
+                <span class="inline-block py-1.5 px-4 rounded-full bg-transparent border border-[var(--border-color)] text-[var(--text-main)] text-[10px] font-black uppercase tracking-widest mb-6 transition-colors duration-1000">Karya Portofolio</span>
                 
                 <h2 class="text-5xl md:text-6xl font-bold tracking-tighter mb-6 leading-[1.1]">
                     <span class="text-[var(--text-main)] transition-colors duration-1000">Karya terbaik</span><br>
@@ -294,15 +145,15 @@
                 
                 <p class="text-[var(--text-muted)] max-w-lg mx-auto text-sm md:text-base font-medium transition-colors duration-1000 mb-10">Pelajari mengapa ratusan klien mempercayakan momen berharga dan sakral mereka kepada kami.</p>
                 
-                <!-- Tombol membuka Kategori Utama -->
-                <button onclick="openCategoryModal()" class="inline-flex items-center gap-3 bg-[var(--text-main)] text-[var(--bg-main)] px-10 py-4 rounded-full font-bold text-sm hover:scale-105 hover:shadow-xl transition-all duration-300">
-                    Lihat Kategori <i class="fas fa-arrow-right text-xs"></i>
-                </button>
+                <div class="pt-4">
+                    <button onclick="openCategoryModal()" class="static-btn">
+                        Lihat Kategori <i class="fas fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- PRICING SECTION -->
     <section id="pricing" class="py-32 px-6 bg-[var(--bg-main)] transition-colors duration-1000 border-b border-[var(--border-color)] relative">
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="text-center mb-20 pricing-header">
@@ -317,7 +168,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
-                <!-- Card 1: Graduation -->
                 <div class="pricing-card bg-[var(--bg-card)] rounded-[2rem] border border-[var(--border-color)] p-8 flex flex-col min-h-[500px]">
                     <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">Graduation</h4>
                     <div class="pricing-content-foto flex flex-col flex-grow">
@@ -350,7 +200,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Pre-Wedding -->
                 <div class="pricing-card popular bg-[var(--bg-card)] rounded-[2rem] p-8 flex flex-col relative z-10 lg:scale-105 min-h-[520px]">
                     <div class="absolute top-0 right-8 -translate-y-1/2 bg-[var(--accent-coral)] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">Populer</div>
                     <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">Pre-Wedding</h4>
@@ -386,7 +235,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Wedding -->
                 <div class="pricing-card bg-[var(--bg-card)] rounded-[2rem] border border-[var(--border-color)] p-8 flex flex-col min-h-[500px]">
                     <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">Wedding Day</h4>
                     <div class="pricing-content-foto flex flex-col flex-grow">
@@ -421,7 +269,6 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Corporate -->
                 <div class="pricing-card bg-[var(--bg-card)] rounded-[2rem] border border-[var(--border-color)] p-8 flex flex-col min-h-[500px]">
                     <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">Corporate Event</h4>
                     <div class="pricing-content-foto flex flex-col flex-grow">
@@ -459,7 +306,6 @@
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[400px] bg-[var(--text-main)] rounded-[100%] blur-[200px] opacity-[0.02] pointer-events-none"></div>
     </section>
 
-    <!-- PERFECT SEAMLESS MARQUEE TESTIMONIALS -->
     <section id="testimonials" class="py-32 bg-[var(--bg-main)] overflow-hidden transition-colors duration-1000">
         <div class="max-w-7xl mx-auto px-6 mb-20 text-center testimonials-header">
             <h6 class="text-[var(--accent-coral)] font-bold uppercase tracking-[0.4em] text-xs mb-4">Voices of Our Clients</h6>
@@ -512,7 +358,7 @@
                     <div class="flex text-[var(--accent-coral)] gap-1 mb-6 text-xs">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="text-[var(--text-muted)] text-sm italic mb-10 leading-relaxed font-medium transition-colors duration-1000">"Kualitas agensi besar namun dengan harga yang masuk akal. Momenku adalah andalan event perusahaan kami."</p>
+                    <p class="text-[var(--text-muted)] text-sm italic mb-10 leading-relaxed font-medium transition-colors duration-1000">"Kualitas agensi besar namun dengan harga yang masuk akal. Memory adalah andalan event perusahaan kami."</p>
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-[var(--bg-main)] flex items-center justify-center font-bold text-yellow-500 border border-[var(--border-color)] transition-colors duration-1000">K</div>
                         <div><h6 class="text-sm font-bold text-[var(--text-main)] transition-colors duration-1000">Kelvin</h6><p class="text-[10px] text-[var(--text-muted)] font-bold uppercase transition-colors duration-1000">Event Organizer</p></div>
@@ -565,7 +411,7 @@
                     <div class="flex text-[var(--accent-coral)] gap-1 mb-6 text-xs">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="text-[var(--text-muted)] text-sm italic mb-10 leading-relaxed font-medium transition-colors duration-1000">"Kualitas agensi besar namun dengan harga yang masuk akal. Momenku adalah andalan event perusahaan kami."</p>
+                    <p class="text-[var(--text-muted)] text-sm italic mb-10 leading-relaxed font-medium transition-colors duration-1000">"Kualitas agensi besar namun dengan harga yang masuk akal. Memory adalah andalan event perusahaan kami."</p>
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-full bg-[var(--bg-main)] flex items-center justify-center font-bold text-yellow-500 border border-[var(--border-color)] transition-colors duration-1000">K</div>
                         <div><h6 class="text-sm font-bold text-[var(--text-main)] transition-colors duration-1000">Kelvin</h6><p class="text-[10px] text-[var(--text-muted)] font-bold uppercase transition-colors duration-1000">Event Organizer</p></div>
@@ -575,7 +421,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="bg-[var(--bg-main)] pt-24 pb-12 px-6 border-t border-[var(--border-color)] transition-colors duration-1000">
         <div class="max-w-7xl mx-auto flex flex-col items-center text-center footer-content">
             
@@ -606,12 +451,11 @@
             </div>
 
             <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-1000">
-                &copy; 2026 MEMORY PREMIUM STUDIO. ALL RIGHTS RESERVED.
+                © 2026 MEMORY PREMIUM STUDIO. ALL RIGHTS RESERVED.
             </p>
         </div>
     </footer>
 
-    <!-- ==================== MODAL 1: KATEGORI SLIDER ==================== -->
     <div id="category-modal" class="fixed inset-0 z-[150] bg-black/80 backdrop-blur-md hidden flex items-center justify-center opacity-0 transition-opacity duration-500">
         <div class="bg-[var(--bg-card)] w-[95%] max-w-6xl rounded-[2.5rem] border border-[var(--border-color)] flex flex-col relative scale-95 transition-all duration-500 shadow-2xl p-8 md:p-12" id="category-modal-content">
             
@@ -622,7 +466,6 @@
             
             <div class="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory hide-scrollbar relative z-10" id="category-slider">
                 
-                <!-- Card 1 -->
                 <div class="min-w-[280px] w-[280px] h-[400px] relative rounded-3xl overflow-hidden snap-center cursor-pointer group border border-[var(--border-color)] shadow-lg" onclick="openGalleryModal('Wedding', 'Kumpulan karya dokumentasi pernikahan dengan sentuhan magis dan puitis.', 'wedding')">
                     <img src="https://i.pinimg.com/736x/10/43/92/10439283aff37ff3484824b36efb7b7f.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <div class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white tracking-widest border border-white/10">Album Populer</div>
@@ -636,7 +479,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="min-w-[280px] w-[280px] h-[400px] relative rounded-3xl overflow-hidden snap-center cursor-pointer group border border-[var(--border-color)] shadow-lg" onclick="openGalleryModal('Pre-Wedding', 'Eksplorasi lokasi memukau untuk menceritakan kisah cinta Anda sebelum hari H.', 'prewedding')">
                     <img src="https://i1-c.pinimg.com/736x/da/4e/d7/da4ed7d6f071ba12b55b6be5097856b9.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <div class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white tracking-widest border border-white/10">Sinematik</div>
@@ -650,7 +492,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="min-w-[280px] w-[280px] h-[400px] relative rounded-3xl overflow-hidden snap-center cursor-pointer group border border-[var(--border-color)] shadow-lg" onclick="openGalleryModal('Graduation', 'Gaya elegan dan editorial untuk merayakan pencapaian akademik Anda.', 'graduation')">
                     <img src="https://i.pinimg.com/736x/d3/8c/47/d38c470bde0d4649d650f03b1bbca555.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <div class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-white tracking-widest border border-white/10">Studio / Outdoor</div>
@@ -664,7 +505,6 @@
                     </div>
                 </div>
 
-                <!-- Card 4 -->
                 <div class="min-w-[280px] w-[280px] h-[400px] relative rounded-3xl overflow-hidden snap-center cursor-pointer group border border-[var(--border-color)] shadow-lg" onclick="openGalleryModal('Event Corporate', 'Dokumentasi acara resmi, gala dinner, dan peluncuran produk.', 'event')">
                     <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90"></div>
@@ -678,7 +518,6 @@
                 </div>
             </div>
 
-            <!-- Footer of Modal 1 -->
             <div class="flex justify-between items-center mt-6 relative z-10">
                 <button class="bg-[var(--text-main)] text-[var(--bg-main)] px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg hover:bg-[var(--accent-coral)] hover:text-white transition-all">
                     Geser Kategori
@@ -689,14 +528,12 @@
                 </div>
             </div>
 
-            <!-- Close Button -->
             <button onclick="closeCategoryModal()" class="absolute -top-4 -right-4 md:-top-5 md:-right-5 w-12 h-12 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-full flex items-center justify-center text-[var(--text-main)] hover:text-white hover:bg-[var(--accent-coral)] hover:border-[var(--accent-coral)] shadow-xl transition-all z-50">
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
     </div>
 
-    <!-- ==================== MODAL 2: GALERI MASONRY ==================== -->
     <div id="gallery-modal" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md hidden flex items-center justify-center opacity-0 transition-opacity duration-500">
         <div class="bg-[var(--bg-main)] w-[95%] max-w-6xl h-[90vh] rounded-[2.5rem] border border-[var(--border-color)] flex flex-col relative scale-95 transition-all duration-500 shadow-2xl overflow-hidden" id="modal-content-gallery">
             
@@ -717,294 +554,11 @@
             
             <div class="p-8 md:p-12 overflow-y-auto flex-grow custom-scrollbar">
                 <div id="modal-grid" class="masonry-grid">
-                    <!-- Images injected via JS -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
-
-
-    <!-- ==================== JAVASCRIPT ==================== -->
-    <script>
-        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-        // --- CINEMATIC THEME TOGGLE ---
-        const themeBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const body = document.body;
-
-        if (localStorage.getItem('theme') === 'dark') {
-            body.classList.add('dark-theme');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-        }
-
-        function toggleThemeLogic() {
-            body.classList.toggle('dark-theme');
-            if (body.classList.contains('dark-theme')) {
-                themeIcon.style.transform = 'rotate(360deg)';
-                setTimeout(() => themeIcon.classList.replace('fa-moon', 'fa-sun'), 150);
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeIcon.style.transform = 'rotate(-360deg)';
-                setTimeout(() => themeIcon.classList.replace('fa-sun', 'fa-moon'), 150);
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        themeBtn.addEventListener('click', (e) => {
-            if (!document.startViewTransition) {
-                toggleThemeLogic();
-                return;
-            }
-
-            const rect = themeBtn.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-
-            const transition = document.startViewTransition(() => {
-                toggleThemeLogic();
-            });
-
-            transition.ready.then(() => {
-                document.documentElement.animate(
-                    {
-                        clipPath: [
-                            `circle(0px at ${x}px ${y}px)`,
-                            `circle(${endRadius}px at ${x}px ${y}px)`
-                        ]
-                    },
-                    {
-                        duration: 1200,
-                        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-                        pseudoElement: '::view-transition-new(root)'
-                    }
-                );
-            });
-        });
-
-        // --- PRICING TOGGLE LOGIC ---
-        const btnFoto = document.getElementById('toggle-foto');
-        const btnVideo = document.getElementById('toggle-video');
-        const fotoContents = document.querySelectorAll('.pricing-content-foto');
-        const videoContents = document.querySelectorAll('.pricing-content-video');
-
-        function switchPricing(mode) {
-            if(mode === 'foto') {
-                btnFoto.classList.add('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnFoto.classList.remove('text-[var(--text-muted)]');
-                
-                btnVideo.classList.remove('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnVideo.classList.add('text-[var(--text-muted)]');
-
-                videoContents.forEach(el => el.classList.add('hidden'));
-                fotoContents.forEach(el => {
-                    el.classList.remove('hidden');
-                    gsap.fromTo(el, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.5, ease: "power2.out"});
-                });
-
-            } else {
-                btnVideo.classList.add('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnVideo.classList.remove('text-[var(--text-muted)]');
-                
-                btnFoto.classList.remove('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnFoto.classList.add('text-[var(--text-muted)]');
-
-                fotoContents.forEach(el => el.classList.add('hidden'));
-                videoContents.forEach(el => {
-                    el.classList.remove('hidden');
-                    gsap.fromTo(el, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.5, ease: "power2.out"});
-                });
-            }
-        }
-
-        btnFoto.addEventListener('click', () => switchPricing('foto'));
-        btnVideo.addEventListener('click', () => switchPricing('video'));
-
-
-        // --- MODAL LOGIC (CATEGORY & GALLERY) ---
-        const catModal = document.getElementById('category-modal');
-        const catModalContent = document.getElementById('category-modal-content');
-        
-        const galleryModal = document.getElementById('gallery-modal');
-        const modalContentGallery = document.getElementById('modal-content-gallery');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDesc = document.getElementById('modal-desc');
-        const modalGrid = document.getElementById('modal-grid');
-        
-        const fallbackImage = "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=800"; 
-
-        const portfolioData = {
-            wedding: [
-                "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800"
-            ],
-            prewedding: [
-                "https://images.unsplash.com/photo-1544161513-0179fe746fd5?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1621689269408-db28b9d3bf67?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1474552226712-ac0f0961a954?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1518104593124-ac2e82a5eb9b?auto=format&fit=crop&q=80&w=800"
-            ],
-            graduation: [
-                "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1568165039239-16a75f0f3531?auto=format&fit=crop&q=80&w=800"
-            ],
-            event: [
-                "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=800"
-            ]
-        };
-
-        function slideCategory(direction) {
-            const slider = document.getElementById('category-slider');
-            const scrollAmount = 300; 
-            slider.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
-        }
-
-        function openCategoryModal() {
-            catModal.classList.remove('hidden');
-            setTimeout(() => {
-                catModal.classList.remove('opacity-0');
-                catModalContent.classList.remove('scale-95');
-            }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeCategoryModal() {
-            catModal.classList.add('opacity-0');
-            catModalContent.classList.add('scale-95');
-            setTimeout(() => {
-                catModal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 500);
-        }
-
-        function openGalleryModal(title, desc, categoryKey) {
-            if (!catModal.classList.contains('hidden')) {
-                catModal.classList.add('opacity-0');
-                setTimeout(() => { catModal.classList.add('hidden'); }, 300);
-            }
-
-            modalTitle.textContent = title;
-            modalDesc.textContent = desc;
-            modalGrid.innerHTML = '';
-
-            const images = portfolioData[categoryKey] || [];
-            images.forEach((imgSrc) => {
-                const imgElement = document.createElement('div');
-                imgElement.className = 'masonry-item rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] opacity-0 translate-y-8 group relative bg-[var(--bg-card)] cursor-pointer';
-                imgElement.innerHTML = `
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
-                    <img src="${imgSrc}" 
-                         onerror="this.onerror=null; this.src='${fallbackImage}';" 
-                         class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" 
-                         alt="Portfolio Image">
-                `;
-                modalGrid.appendChild(imgElement);
-            });
-
-            galleryModal.classList.remove('hidden');
-            setTimeout(() => {
-                galleryModal.classList.remove('opacity-0');
-                modalContentGallery.classList.remove('scale-95');
-                gsap.to('.masonry-item', { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" });
-            }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function backToCategoryModal() {
-            galleryModal.classList.add('opacity-0');
-            modalContentGallery.classList.add('scale-95');
-            setTimeout(() => {
-                galleryModal.classList.add('hidden');
-                openCategoryModal(); 
-            }, 300);
-        }
-
-        function closeGalleryModal() {
-            galleryModal.classList.add('opacity-0');
-            modalContentGallery.classList.add('scale-95');
-            setTimeout(() => {
-                galleryModal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 500);
-        }
-
-        catModal.addEventListener('click', (e) => {
-            if(e.target === catModal) closeCategoryModal();
-        });
-        
-        galleryModal.addEventListener('click', (e) => {
-            if(e.target === galleryModal) closeGalleryModal();
-        });
-
-        // --- SCROLL ANIMATIONS (ATAS & BAWAH / ENTER & REVERSE) ---
-        window.addEventListener('load', () => {
-            window.addEventListener('scroll', () => {
-                const nav = document.getElementById('main-nav');
-                if (window.scrollY > 50) nav.classList.add('nav-blur');
-                else nav.classList.remove('nav-blur');
-            });
-
-            // Hero Animation
-            gsap.from(".hero-content > *", { y: 40, opacity: 0, duration: 1.5, stagger: 0.15, ease: "power3.out" });
-
-            // Portofolio Section Animations (Atas & Bawah)
-            gsap.from("#portfolio .mask-bottom-fade .portfolio-grid-col", {
-                scrollTrigger: { trigger: "#portfolio", start: "top 80%", toggleActions: "play none none reverse" },
-                y: 80, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power3.out"
-            });
-            gsap.from("#portfolio .portfolio-header > *", {
-                scrollTrigger: { trigger: "#portfolio .portfolio-header", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
-            });
-
-            // Pricing Section Animations (Atas & Bawah)
-            gsap.from("#pricing .pricing-header > *", {
-                scrollTrigger: { trigger: "#pricing", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
-            });
-            gsap.from(".pricing-card", {
-                scrollTrigger: { trigger: "#pricing .grid", start: "top 80%", toggleActions: "play none none reverse" },
-                y: 60, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out"
-            });
-
-            // Testimonial Section Animations (Atas & Bawah)
-            gsap.from("#testimonials .testimonials-header > *", {
-                scrollTrigger: { trigger: "#testimonials", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
-            });
-            gsap.from(".marquee-container", {
-                scrollTrigger: { trigger: "#testimonials .marquee-container", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 60, opacity: 0, duration: 1.2, ease: "power3.out"
-            });
-
-            // Footer Section Animations (Atas & Bawah)
-            gsap.from("footer .footer-content > *", {
-                scrollTrigger: { trigger: "footer", start: "top 90%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
-            });
-
-            // Smooth Scrolling Links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    gsap.to(window, {
-                        duration: 1.5,
-                        scrollTo: { y: this.getAttribute('href'), offsetY: 80 },
-                        ease: "power3.inOut"
-                    });
-                });
-            });
-        });
-    </script>
+    
+    <script src="./script.js"></script>
 </body>
 </html>
