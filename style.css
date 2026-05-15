@@ -95,7 +95,7 @@
         /* --- OVERRIDE HANGING GRID KHUSUS MOBILE AGAR PAS DI TENGAH --- */
         @media (max-width: 767px) {
             #portfolio .mask-bottom-fade {
-                height: auto !important; /* Hapus ruang kosong */
+                height: auto !important; 
                 min-height: 280px;
                 gap: 0.5rem !important; 
                 padding-top: 1rem;
@@ -138,6 +138,31 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent-coral); }
 
+        /* ==================== MOBILE MENU (COMPACT ICON BAR) ==================== */
+        #mobile-menu {
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background-color: var(--bg-card); border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            transform-origin: top; transform: scaleY(0); opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            z-index: 90;
+        }
+        #mobile-menu.menu-active { transform: scaleY(1); opacity: 1; }
+        .dark-theme #mobile-menu { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
+
+        .mobile-link-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0.4rem; color: var(--text-muted); font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em; padding: 1.25rem 0.5rem;
+            transition: color 0.3s ease;
+        }
+        .mobile-link-item i {
+            font-size: 1.25rem; color: var(--text-main);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .mobile-link-item:hover { color: var(--accent-coral); }
+        .mobile-link-item:hover i { color: var(--accent-coral); transform: translateY(-3px); }
+
         /* ==================== TESTIMONIALS (GOOGLE REVIEW STYLE) ==================== */
         .marquee-container {
             display: flex; overflow: hidden; user-select: none;
@@ -151,7 +176,7 @@
         }
 
         .testimonial-card {
-            width: 250px !important; 
+            width: 250px !important; /* Ukuran sangat minimalis */
             flex-shrink: 0; 
             padding: 1rem 1.25rem !important; /* Padding dirapatkan */
             border-radius: 0.75rem !important;
@@ -175,7 +200,7 @@
         .testimonial-card p {
             font-size: 0.75rem !important;
             line-height: 1.4 !important;
-            margin-bottom: 0.75rem !important; /* Ruang kosong dikurangi */
+            margin-bottom: 0.75rem !important; 
             font-style: normal !important; 
             color: var(--text-main) !important;
         }
@@ -204,7 +229,7 @@
         .masonry-item { break-inside: avoid; margin-bottom: 1rem; display: inline-block; width: 100%; }
         @media (min-width: 768px) { .masonry-item { margin-bottom: 1.5rem; } }
 
-        /* ==================== PRICING CARDS ==================== */
+        /* ==================== PRICING CARDS (EQUAL HEIGHT & COMPACT) ==================== */
         .pricing-card { 
             transition: transform 0.4s ease, border-color 1s var(--cine-ease); 
             padding: 1.25rem !important; 
@@ -212,7 +237,7 @@
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important; 
-            height: auto !important; /* Biarkan konten mengatur tinggi */
+            height: 100% !important; /* Memaksa menyamakan tinggi secara otomatis */
             
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
@@ -231,19 +256,19 @@
         .pricing-card h4 { font-size: 0.65rem !important; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.25rem !important;}
         .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 1.5rem !important; font-weight: 800; letter-spacing: -0.02em; }
         .pricing-card .text-2xl, .pricing-card .text-xl { font-size: 0.75rem !important; font-weight: 600; margin-left: 2px;}
-        .pricing-card p { font-size: 0.65rem !important; line-height: 1.3; color: var(--text-muted); margin-bottom: 0.75rem !important;} /* Ruang kosong dikurangi */
+        .pricing-card p { font-size: 0.65rem !important; line-height: 1.3; color: var(--text-muted); margin-bottom: 0.75rem !important;}
         
         .pricing-card ul { margin-bottom: 1rem !important; flex-grow: 1; display: flex; flex-direction: column; }
         .pricing-card ul li { font-size: 0.65rem !important; padding-bottom: 0.25rem !important; margin-bottom: 0.25rem !important; border-bottom: 1px solid rgba(0,0,0,0.04); display: flex; align-items: flex-start; }
         .dark-theme .pricing-card ul li { border-bottom-color: rgba(255,255,255,0.04); }
         .pricing-card ul li:last-child { border-bottom: none; padding-bottom: 0 !important; margin-bottom: 0 !important; }
         
-        .pricing-card button { padding: 0.6rem 1rem !important; font-size: 0.65rem !important; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px !important; margin-top: auto !important; margin-bottom: 0.75rem !important; width: 100% !important; }
+        .pricing-card button { padding: 0.6rem 1rem !important; font-size: 0.65rem !important; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px !important; margin-top: auto !important; margin-bottom: 0.25rem !important; width: 100% !important; }
 
         .pricing-card:hover { transform: translateY(-4px); }
         
         @media (min-width: 1024px) {
-            #pricing .grid { align-items: stretch; }
+            #pricing .grid { align-items: stretch; } /* Penyelaras tinggi di Desktop */
             .pricing-card.popular { 
                 transform: none !important; 
                 border: 1px solid rgba(230, 126, 95, 0.6) !important; 
@@ -261,18 +286,18 @@
                 overflow-y: hidden; 
                 scroll-snap-type: x mandatory;
                 scroll-padding: 0 4vw;
-                gap: 0.75rem; /* Rapatkan */
-                padding: 0.5rem 4vw 1rem 4vw; /* Ruang kosong atas/bawah ditekan */
+                gap: 0.75rem; 
+                padding: 0.5rem 4vw 1rem 4vw; 
                 -ms-overflow-style: none;
                 scrollbar-width: none;
                 -webkit-overflow-scrolling: touch;
-                align-items: stretch; 
+                align-items: stretch; /* Memaksa tinggi seragam saat di scroll ke samping */
             }
             #pricing .grid::-webkit-scrollbar { display: none; }
             
             .pricing-card {
                 flex: 0 0 auto; 
-                width: 240px !important; /* Sedikit dilebarkan dari 220 ke 240 agar text muat rapi */
+                width: 240px !important; 
                 scroll-snap-align: center;
                 height: auto !important; 
             }
@@ -286,31 +311,28 @@
         /* ==================== KATEGORI MODAL & SLIDER ==================== */
         #category-modal-content, #modal-content-gallery {
             max-width: 860px !important; 
-            height: auto !important; /* Menyesuaikan isi, tidak memaksakan tinggi */
-            max-height: 90vh !important; /* Batas atas tinggi */
+            height: auto !important; 
+            max-height: 90vh !important; 
             padding: 1.25rem !important;
         }
         @media (min-width: 768px) {
             #category-modal-content, #modal-content-gallery { padding: 2rem !important; }
         }
 
-        /* Menghilangkan ruang kosong pada kontainer judul Modal */
-        #category-modal-content .flex-col {
-            margin-bottom: 1rem !important; 
-        }
+        #category-modal-content .flex-col { margin-bottom: 1rem !important; }
 
         /* Penyesuaian Lebar Card Kategori agar TEPAT Muat 2 Card di HP */
         #category-slider {
-            gap: 0.5rem !important; /* Jarak dirapatkan */
+            gap: 0.5rem !important; 
             padding-bottom: 0.5rem !important;
         }
         #category-slider > div {
-            /* Perhitungan matematis: Setengah lebar kontainer dikurangi jarak (gap) */
+            /* 50% dari kontainer dikurangi gap, sehingga tepat 2 kartu terlihat */
             flex: 0 0 calc(50% - 0.25rem) !important; 
             min-width: auto !important;
             width: auto !important;
             max-width: none !important;
-            height: 220px !important; /* Tinggi kompak */
+            height: 220px !important; 
             border-radius: 1rem !important;
         }
         #category-slider > div .p-5, #category-slider > div .p-6 { padding: 0.75rem !important; }
@@ -326,7 +348,6 @@
             #category-slider > div { scroll-snap-align: center; }
         }
 
-        /* Mengembalikan ukuran besar untuk Desktop */
         @media (min-width: 768px) {
             #category-slider { gap: 1.5rem !important; padding-bottom: 1rem !important; }
             #category-slider > div {
