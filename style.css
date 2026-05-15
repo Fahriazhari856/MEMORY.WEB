@@ -48,6 +48,7 @@
             overflow-x: hidden;
             line-height: 1.6;
             transition: background-color 1s var(--cine-ease), color 1s var(--cine-ease);
+            -webkit-font-smoothing: antialiased;
         }
 
         .font-serif { font-family: 'DM Serif Display', serif; }
@@ -81,8 +82,8 @@
 
         @keyframes floatingWind {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(12px, -18px) rotate(1.5deg); }
-            66% { transform: translate(-8px, -28px) rotate(-1deg); }
+            33% { transform: translate(8px, -12px) rotate(1.5deg); }
+            66% { transform: translate(-6px, -20px) rotate(-1deg); }
         }
 
         .mask-bottom-fade {
@@ -100,6 +101,7 @@
         .nav-blur {
             background: var(--bg-nav) !important;
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             transition: background-color 1s var(--cine-ease), border-color 1s var(--cine-ease);
         }
@@ -108,50 +110,57 @@
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; scroll-behavior: smooth; }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent-coral); }
 
-        /* ==================== MARQUEE & TESTIMONIALS (RESPONSIVE & LUXURY) ==================== */
+        /* ==================== MARQUEE & TESTIMONIALS (MINIMALIST & RESPONSIVE) ==================== */
         .marquee-container {
             display: flex; overflow: hidden; user-select: none;
             mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
         
         .marquee-content { 
-            display: flex; flex-shrink: 0; gap: 1rem; padding-right: 1rem;
+            display: flex; flex-shrink: 0; gap: 1.25rem; padding-right: 1.25rem;
             animation: scroll-left 40s linear infinite; 
         }
 
+        /* Kartu Testimoni: Mewah dan Ramping di HP */
         .testimonial-card {
-            /* Komentar Audiens Diperkecil & Efek Glassmorphism */
-            width: 280px; 
+            width: 75vw; /* Lebar proporsional layar HP */
+            max-width: 320px; 
             flex-shrink: 0; 
             padding: 1.5rem; 
-            border-radius: 1.5rem;
+            border-radius: 1.25rem;
             transition: transform 0.4s ease, border-color 1s var(--cine-ease), background-color 1s var(--cine-ease);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            background-color: rgba(255, 255, 255, 0.65) !important;
-            border: 1px solid rgba(255, 255, 255, 0.4) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            
+            /* Premium Glassmorphism */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
+            border: 1px solid rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
         }
         
         .dark-theme .testimonial-card {
-            background-color: rgba(39, 39, 42, 0.45) !important;
+            background: linear-gradient(135deg, rgba(39, 39, 42, 0.6), rgba(24, 24, 27, 0.4)) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
-        /* Setingan khusus Desktop Komentar */
+        /* Penyesuaian Desktop untuk Komentar */
         @media (min-width: 768px) {
-            .marquee-container { mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
-            .marquee-content { gap: 1.5rem; padding-right: 1.5rem; }
-            .testimonial-card { width: 360px; padding: 2rem; }
+            .marquee-container { 
+                mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); 
+                -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); 
+            }
+            .marquee-content { gap: 2rem; padding-right: 2rem; }
+            .testimonial-card { width: 380px; padding: 2rem; border-radius: 1.5rem; }
         }
 
-        .testimonial-card:hover { border-color: var(--accent-coral) !important; transform: translateY(-8px); }
+        .testimonial-card:hover { border-color: var(--accent-coral) !important; transform: translateY(-6px); }
         .marquee-container:hover .marquee-content { animation-play-state: paused; }
 
         @keyframes scroll-left {
@@ -160,72 +169,85 @@
         }
 
         /* ==================== MASONRY GRID ==================== */
-        .masonry-grid { column-count: 1; column-gap: 1.5rem; }
-        @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
+        .masonry-grid { column-count: 1; column-gap: 1rem; }
+        @media (min-width: 768px) { .masonry-grid { column-count: 2; column-gap: 1.5rem;} }
         @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-        .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; display: inline-block; width: 100%; }
+        .masonry-item { break-inside: avoid; margin-bottom: 1rem; display: inline-block; width: 100%; }
+        @media (min-width: 768px) { .masonry-item { margin-bottom: 1.5rem; } }
 
-        /* ==================== PRICING CARDS (GLASSMORPHISM & SLEEK TYPOGRAPHY) ==================== */
+        /* ==================== PRICING CARDS (SLEEK & GLASSMORPHISM) ==================== */
         .pricing-card { 
             transition: transform 0.4s ease, border-color 1s var(--cine-ease), background-color 1s var(--cine-ease); 
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            background-color: rgba(255, 255, 255, 0.65) !important;
-            border: 1px solid rgba(255, 255, 255, 0.4) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            
+            /* Premium Glassmorphism */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)) !important;
+            border: 1px solid rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
         }
 
         .dark-theme .pricing-card {
-            background-color: rgba(39, 39, 42, 0.45) !important;
+            background: linear-gradient(135deg, rgba(39, 39, 42, 0.7), rgba(24, 24, 27, 0.4)) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
-        /* Tipografi Elegan Khusus Harga */
-        .pricing-card h4 { font-size: 0.75rem !important; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 1rem !important;}
-        .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 2.25rem !important; font-weight: 800; letter-spacing: -0.03em; }
-        .pricing-card .text-2xl, .pricing-card .text-xl { font-size: 1.25rem !important; font-weight: 600; margin-left: 2px;}
-        .pricing-card p { font-size: 0.75rem !important; line-height: 1.6; color: var(--text-muted); margin-bottom: 1.5rem !important;}
-        .pricing-card ul li { font-size: 0.75rem !important; margin-bottom: 0.5rem !important; }
-        .pricing-card button { padding: 0.75rem 1rem !important; font-size: 0.75rem !important; letter-spacing: 0.05em; text-transform: uppercase;}
+        /* Tipografi Minimalis & Mewah Khusus Harga */
+        .pricing-card h4 { font-size: 0.7rem !important; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.75rem !important;}
+        .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 1.75rem !important; font-weight: 800; letter-spacing: -0.02em; }
+        @media (min-width: 768px) { .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 2rem !important; } }
+        .pricing-card .text-2xl, .pricing-card .text-xl { font-size: 0.875rem !important; font-weight: 600; margin-left: 2px;}
+        .pricing-card p { font-size: 0.75rem !important; line-height: 1.5; color: var(--text-muted); margin-bottom: 1.25rem !important;}
+        
+        .pricing-card ul { margin-bottom: 1.5rem !important; flex-grow: 1; }
+        .pricing-card ul li { font-size: 0.75rem !important; padding-bottom: 0.4rem; margin-bottom: 0.6rem !important; border-bottom: 1px solid rgba(0,0,0,0.04); display: flex; align-items: flex-start; }
+        .dark-theme .pricing-card ul li { border-bottom-color: rgba(255,255,255,0.04); }
+        .pricing-card ul li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0 !important; }
+        
+        .pricing-card button { padding: 0.75rem 1rem !important; font-size: 0.7rem !important; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px !important; margin-bottom: 1.5rem !important; }
 
         .pricing-card:hover { transform: translateY(-5px); }
         
-        /* Highlight khusus Desktop */
+        /* Highlight Desktop */
         @media (min-width: 1024px) {
             .pricing-card.popular { 
-                border: 1px solid rgba(230, 126, 95, 0.5) !important; 
-                box-shadow: 0 15px 40px rgba(230, 126, 95, 0.15) !important; 
-                transform: scale(1.02);
+                border: 1px solid rgba(230, 126, 95, 0.4) !important; 
+                box-shadow: 0 15px 40px rgba(230, 126, 95, 0.1) !important; 
+                transform: scale(1.03);
             }
-            .pricing-card.popular:hover { transform: scale(1.04) translateY(-5px); }
+            .pricing-card.popular:hover { transform: scale(1.05) translateY(-5px); }
         }
 
-        /* Layout Grid Pricing untuk Mobile (Ramping, Horizontal Scroll, Kunci Vertikal) */
+        /* Layout Grid Pricing Khusus Mobile: Ramping & Horizontal Scroll Terkunci */
         @media (max-width: 1023px) {
             #pricing .grid {
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
-                overflow-y: hidden; /* Mengunci agar tidak bisa digeser vertikal ke bawah/atas dari dalam kotak */
+                overflow-y: hidden; /* Mencegah scroll vertikal yang tidak diinginkan di dalam div */
                 scroll-snap-type: x mandatory;
-                gap: 1rem;
-                padding: 1.5rem 0.5rem 1.5rem 0.5rem; /* Padding ekstra agar shadow/blur tidak terpotong */
+                scroll-padding: 0 10vw; /* Margin bayangan saat di-snap */
+                gap: 1.25rem;
+                padding: 1rem 10vw 2.5rem 10vw; /* Memberi ruang agar shadow/blur terlihat dan kartu ada di tengah */
                 -ms-overflow-style: none;
                 scrollbar-width: none;
+                -webkit-overflow-scrolling: touch; /* Kelancaran scroll di iOS */
             }
             #pricing .grid::-webkit-scrollbar { display: none; }
             
             .pricing-card {
-                flex: 0 0 72%; /* Kartu dibuat sangat ramping (72% layar HP) */
+                flex: 0 0 75vw; /* Kartu sangat ramping di HP (75% layar) */
+                max-width: 300px;
                 scroll-snap-align: center;
                 min-height: auto !important;
                 padding: 1.5rem !important;
+                border-radius: 1.25rem !important;
             }
 
             .pricing-card.popular { 
-                border: 1px solid rgba(230, 126, 95, 0.5) !important; 
-                box-shadow: 0 8px 32px rgba(230, 126, 95, 0.1) !important;
+                border: 1px solid rgba(230, 126, 95, 0.4) !important; 
+                box-shadow: 0 8px 30px rgba(230, 126, 95, 0.1) !important;
             }
         }
         
@@ -240,9 +262,11 @@
             padding: 1rem 2.5rem;
             border-radius: 9999px;
             font-weight: 700;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
             cursor: pointer;
             border: 1px solid transparent;
             z-index: 50;
@@ -252,7 +276,7 @@
             background-color: var(--accent-coral);
             color: white;
             transform: scale(1.05);
-            box-shadow: 0 20px 25px -5px rgba(230, 126, 95, 0.3);
+            box-shadow: 0 15px 25px -5px rgba(230, 126, 95, 0.3);
         }
         
         .dark-theme .static-btn {
