@@ -1,35 +1,42 @@
 
+        // Registrasi Plugin GSAP
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-        // --- MOBILE MENU LOGIC ---
+        // Mengatur default animasi global agar konsisten dan mewah
+        gsap.defaults({ ease: "power4.out", duration: 1.2 });
+
+        // --- MOBILE MENU LOGIC (COMPACT ICON BAR) ---
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const mobileLinks = document.querySelectorAll('.mobile-link-item');
         let isMobileMenuOpen = false;
 
         function toggleMobileMenu() {
             isMobileMenuOpen = !isMobileMenuOpen;
             if (isMobileMenuOpen) {
-                mobileMenu.classList.remove('hidden');
-                setTimeout(() => mobileMenu.classList.remove('opacity-0'), 10);
+                mobileMenu.classList.add('menu-active');
                 mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
-                document.body.style.overflow = 'hidden';
             } else {
-                mobileMenu.classList.add('opacity-0');
-                setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+                mobileMenu.classList.remove('menu-active');
                 mobileMenuBtn.innerHTML = '<i class="fas fa-bars-staggered"></i>';
-                document.body.style.overflow = 'auto';
             }
         }
 
         mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        
+        // Tutup menu dengan halus jika klik link
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if(isMobileMenuOpen) toggleMobileMenu();
             });
         });
 
-        // --- CINEMATIC THEME TOGGLE ---
+        // Tutup menu jika user scroll
+        window.addEventListener('scroll', () => {
+             if(isMobileMenuOpen) toggleMobileMenu();
+        });
+
+        // --- CINEMATIC THEME TOGGLE (VIEW TRANSITIONS API) ---
         const themeBtnDesktop = document.getElementById('theme-toggle');
         const themeIconDesktop = document.getElementById('theme-icon');
         const themeBtnMobile = document.getElementById('theme-toggle-mobile');
@@ -46,8 +53,9 @@
             body.classList.toggle('dark-theme');
             const isDark = body.classList.contains('dark-theme');
             
-            themeIconDesktop.style.transform = isDark ? 'rotate(360deg)' : 'rotate(-360deg)';
-            themeIconMobile.style.transform = isDark ? 'rotate(360deg)' : 'rotate(-360deg)';
+            // Rotasi ikon yang lebih dramatis
+            themeIconDesktop.style.transform = isDark ? 'rotate(360deg) scale(1.1)' : 'rotate(-360deg) scale(1)';
+            themeIconMobile.style.transform = isDark ? 'rotate(360deg) scale(1.1)' : 'rotate(-360deg) scale(1)';
             
             setTimeout(() => {
                 themeIconDesktop.classList.replace(isDark ? 'fa-moon' : 'fa-sun', isDark ? 'fa-sun' : 'fa-moon');
@@ -80,8 +88,8 @@
                         ]
                     },
                     {
-                        duration: 1200,
-                        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+                        duration: 1000,
+                        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)', // Apple-like easing
                         pseudoElement: '::view-transition-new(root)'
                     }
                 );
@@ -91,39 +99,33 @@
         themeBtnDesktop.addEventListener('click', handleThemeClick);
         themeBtnMobile.addEventListener('click', handleThemeClick);
 
-        // --- PRICING TOGGLE LOGIC ---
+        // --- PRICING TOGGLE LOGIC (WITH PREMIUM FADE-SCALE EFFECT) ---
         const btnFoto = document.getElementById('toggle-foto');
         const btnVideo = document.getElementById('toggle-video');
         const fotoContents = document.querySelectorAll('.pricing-content-foto');
         const videoContents = document.querySelectorAll('.pricing-content-video');
 
         function switchPricing(mode) {
-            if(mode === 'foto') {
-                btnFoto.classList.add('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnFoto.classList.remove('text-[var(--text-muted)]');
-                
-                btnVideo.classList.remove('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnVideo.classList.add('text-[var(--text-muted)]');
+            const activeBtn = mode === 'foto' ? btnFoto : btnVideo;
+            const inactiveBtn = mode === 'foto' ? btnVideo : btnFoto;
+            const activeContents = mode === 'foto' ? fotoContents : videoContents;
+            const hiddenContents = mode === 'foto' ? videoContents : fotoContents;
 
-                videoContents.forEach(el => el.classList.add('hidden'));
-                fotoContents.forEach(el => {
-                    el.classList.remove('hidden');
-                    gsap.fromTo(el, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.5, ease: "power2.out"});
-                });
+            // Update button styles
+            activeBtn.classList.add('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
+            activeBtn.classList.remove('text-[var(--text-muted)]');
+            inactiveBtn.classList.remove('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
+            inactiveBtn.classList.add('text-[var(--text-muted)]');
 
-            } else {
-                btnVideo.classList.add('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnVideo.classList.remove('text-[var(--text-muted)]');
-                
-                btnFoto.classList.remove('bg-[var(--text-main)]', 'text-[var(--bg-main)]');
-                btnFoto.classList.add('text-[var(--text-muted)]');
-
-                fotoContents.forEach(el => el.classList.add('hidden'));
-                videoContents.forEach(el => {
-                    el.classList.remove('hidden');
-                    gsap.fromTo(el, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.5, ease: "power2.out"});
-                });
-            }
+            // Hide old content instantly, animate new content with a subtle premium scale
+            hiddenContents.forEach(el => el.classList.add('hidden'));
+            activeContents.forEach(el => {
+                el.classList.remove('hidden');
+                gsap.fromTo(el, 
+                    { opacity: 0, y: 15, scale: 0.98 }, 
+                    { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }
+                );
+            });
         }
 
         btnFoto.addEventListener('click', () => switchPricing('foto'));
@@ -173,11 +175,10 @@
 
         function slideCategory(direction) {
             const slider = document.getElementById('category-slider');
-            const scrollAmount = window.innerWidth < 768 ? 260 : 300; 
+            const scrollAmount = window.innerWidth < 768 ? 160 : 300; 
             slider.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
         }
 
-        // Tampilkan tombol statis saja dan hapus opsi click ganda agar animasi fokus
         function openCategoryModal() {
             catModal.classList.remove('hidden');
             setTimeout(() => {
@@ -209,7 +210,7 @@
             const images = portfolioData[categoryKey] || [];
             images.forEach((imgSrc) => {
                 const imgElement = document.createElement('div');
-                imgElement.className = 'masonry-item rounded-[1rem] md:rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] opacity-0 translate-y-8 group relative bg-[var(--bg-card)] cursor-pointer';
+                imgElement.className = 'masonry-item rounded-[1rem] md:rounded-[1.5rem] overflow-hidden shadow-lg border border-[var(--border-color)] opacity-0 group relative bg-[var(--bg-card)] cursor-pointer';
                 imgElement.innerHTML = `
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 z-10 pointer-events-none"></div>
                     <img src="${imgSrc}" 
@@ -221,10 +222,15 @@
             });
 
             galleryModal.classList.remove('hidden');
+            
+            // Animasi kemunculan galeri beruntun (Staggering) yang sangat estetik
             setTimeout(() => {
                 galleryModal.classList.remove('opacity-0');
                 modalContentGallery.classList.remove('scale-95');
-                gsap.to('.masonry-item', { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" });
+                gsap.fromTo('.masonry-item', 
+                    { y: 40, opacity: 0, scale: 0.95 }, 
+                    { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.08, ease: "expo.out", delay: 0.1 }
+                );
             }, 10);
             document.body.style.overflow = 'hidden';
         }
@@ -255,50 +261,67 @@
             if(e.target === galleryModal) closeGalleryModal();
         });
 
-        // --- SCROLL ANIMATIONS ---
+        // --- SCROLL ANIMATIONS (SNAPPY & ELEGANT) ---
         window.addEventListener('load', () => {
+            
+            // Perbaikan agar ukuran trigger dinamis tidak nyangkut saat resize layar
+            window.addEventListener('resize', () => ScrollTrigger.refresh());
+
+            // Nav Blur Logic
             window.addEventListener('scroll', () => {
                 const nav = document.getElementById('main-nav');
                 if (window.scrollY > 50) nav.classList.add('nav-blur');
                 else nav.classList.remove('nav-blur');
             });
 
-            gsap.from(".hero-content > *", { y: 40, opacity: 0, duration: 1.5, stagger: 0.15, ease: "power3.out" });
+            // Hero Animation: Smooth float up
+            gsap.from(".hero-content > *", { y: 50, opacity: 0, duration: 1.5, stagger: 0.15, ease: "expo.out" });
+
+            // Portofolio Animations
+            gsap.from("#portfolio .mask-bottom-fade .portfolio-grid-col", {
+                scrollTrigger: { trigger: "#portfolio", start: "top 85%", toggleActions: "play none none reverse" },
+                y: 80, opacity: 0, scale: 0.98, duration: 1.5, stagger: 0.15, ease: "expo.out"
+            });
+            gsap.from("#portfolio .portfolio-header > *", {
+                scrollTrigger: { trigger: "#portfolio .portfolio-header", start: "top 90%", toggleActions: "play none none reverse" },
+                y: 40, opacity: 0, duration: 1.2, stagger: 0.1, ease: "power3.out"
+            });
 
             // Pricing Animations
             gsap.from("#pricing .pricing-header > *", {
                 scrollTrigger: { trigger: "#pricing", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
+                y: 40, opacity: 0, duration: 1.2, stagger: 0.1, ease: "power3.out"
             });
             gsap.from(".pricing-card", {
                 scrollTrigger: { trigger: "#pricing .grid", start: "top 80%", toggleActions: "play none none reverse" },
-                y: 60, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out"
+                y: 60, opacity: 0, scale: 0.95, duration: 1.2, stagger: 0.15, ease: "expo.out"
             });
 
             // Testimonial Animations
             gsap.from("#testimonials .testimonials-header > *", {
                 scrollTrigger: { trigger: "#testimonials", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
+                y: 40, opacity: 0, duration: 1.2, stagger: 0.1, ease: "power3.out"
             });
             gsap.from(".marquee-container", {
                 scrollTrigger: { trigger: "#testimonials .marquee-container", start: "top 85%", toggleActions: "play none none reverse" },
-                y: 60, opacity: 0, duration: 1.2, ease: "power3.out"
+                y: 50, opacity: 0, duration: 1.5, ease: "expo.out"
             });
 
             // Footer Animations
             gsap.from("footer .footer-content > *", {
                 scrollTrigger: { trigger: "footer", start: "top 90%", toggleActions: "play none none reverse" },
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out"
+                y: 40, opacity: 0, duration: 1.2, stagger: 0.1, ease: "power3.out"
             });
 
+            // Smooth Scrolling Links (Navigasi Antar Halaman)
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     if(isMobileMenuOpen) toggleMobileMenu(); 
                     gsap.to(window, {
-                        duration: 1.5,
-                        scrollTo: { y: this.getAttribute('href'), offsetY: 80 },
-                        ease: "power3.inOut"
+                        duration: 1.5, // Durasi gulir lambat dan estetik
+                        scrollTo: { y: this.getAttribute('href'), offsetY: 80 }, // offset agar tidak tertutup navbar
+                        ease: "power4.inOut" // Easing Cinematic
                     });
                 });
             });
