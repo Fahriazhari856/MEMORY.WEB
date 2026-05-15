@@ -49,6 +49,7 @@
             line-height: 1.6;
             transition: background-color 1s var(--cine-ease), color 1s var(--cine-ease);
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .font-serif { font-family: 'DM Serif Display', serif; }
@@ -82,13 +83,36 @@
 
         @keyframes floatingWind {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(8px, -12px) rotate(1.5deg); }
-            66% { transform: translate(-6px, -20px) rotate(-1deg); }
+            33% { transform: translate(10px, -15px) rotate(1.5deg); }
+            66% { transform: translate(-6px, -22px) rotate(-1deg); }
         }
 
         .mask-bottom-fade {
             mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+
+        /* --- OVERRIDE HANGING GRID KHUSUS MOBILE AGAR PAS DI TENGAH --- */
+        @media (max-width: 767px) {
+            #portfolio .mask-bottom-fade {
+                height: auto !important; /* Hapus ruang kosong */
+                min-height: 280px;
+                gap: 0.5rem !important; 
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                justify-content: center !important;
+            }
+            #portfolio .portfolio-grid-col { gap: 0.5rem !important; }
+            #portfolio .portfolio-grid-col > div {
+                width: 80px !important; 
+                height: 110px !important;
+                border-radius: 0.75rem !important;
+            }
+            #portfolio .portfolio-grid-col:nth-child(3) > div {
+                width: 115px !important; 
+                height: 165px !important;
+                border-radius: 1rem !important;
+            }
         }
 
         /* Utilities */
@@ -109,13 +133,12 @@
         /* Scrollbars */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; scroll-behavior: smooth; }
-
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--accent-coral); }
 
-        /* ==================== MARQUEE & TESTIMONIALS (MINIMALIST & RESPONSIVE) ==================== */
+        /* ==================== TESTIMONIALS (GOOGLE REVIEW STYLE) ==================== */
         .marquee-container {
             display: flex; overflow: hidden; user-select: none;
             mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
@@ -123,44 +146,50 @@
         }
         
         .marquee-content { 
-            display: flex; flex-shrink: 0; gap: 1.25rem; padding-right: 1.25rem;
+            display: flex; flex-shrink: 0; gap: 1rem; padding-right: 1rem;
             animation: scroll-left 40s linear infinite; 
         }
 
-        /* Kartu Testimoni: Mewah dan Ramping di HP */
         .testimonial-card {
-            width: 75vw; /* Lebar proporsional layar HP */
-            max-width: 320px; 
+            width: 250px !important; 
             flex-shrink: 0; 
-            padding: 1.5rem; 
-            border-radius: 1.25rem;
-            transition: transform 0.4s ease, border-color 1s var(--cine-ease), background-color 1s var(--cine-ease);
+            padding: 1rem 1.25rem !important; /* Padding dirapatkan */
+            border-radius: 0.75rem !important;
+            text-align: left;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             
-            /* Premium Glassmorphism */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4)) !important;
-            border: 1px solid rgba(255, 255, 255, 0.6) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            /* Clean Flat Design a la Google */
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
-        
+
         .dark-theme .testimonial-card {
-            background: linear-gradient(135deg, rgba(39, 39, 42, 0.6), rgba(24, 24, 27, 0.4)) !important;
+            background: var(--bg-card) !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
-        /* Penyesuaian Desktop untuk Komentar */
+        .testimonial-card p {
+            font-size: 0.75rem !important;
+            line-height: 1.4 !important;
+            margin-bottom: 0.75rem !important; /* Ruang kosong dikurangi */
+            font-style: normal !important; 
+            color: var(--text-main) !important;
+        }
+        .testimonial-card .fa-star { color: #fbbc04 !important; font-size: 0.7rem !important; }
+        .testimonial-card h6 { font-size: 0.8rem !important; margin-bottom: 0 !important; }
+        .testimonial-card .rounded-full { width: 30px !important; height: 30px !important; font-size: 0.7rem !important; }
+
         @media (min-width: 768px) {
-            .marquee-container { 
-                mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); 
-                -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); 
-            }
-            .marquee-content { gap: 2rem; padding-right: 2rem; }
-            .testimonial-card { width: 380px; padding: 2rem; border-radius: 1.5rem; }
+            .marquee-container { mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+            .marquee-content { gap: 1.5rem; padding-right: 1.5rem; }
+            .testimonial-card { width: 320px !important; padding: 1.5rem !important; border-radius: 1rem !important;}
         }
 
-        .testimonial-card:hover { border-color: var(--accent-coral) !important; transform: translateY(-6px); }
+        .testimonial-card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important; transform: translateY(-4px); }
         .marquee-container:hover .marquee-content { animation-play-state: paused; }
 
         @keyframes scroll-left {
@@ -170,120 +199,155 @@
 
         /* ==================== MASONRY GRID ==================== */
         .masonry-grid { column-count: 1; column-gap: 1rem; }
-        @media (min-width: 768px) { .masonry-grid { column-count: 2; column-gap: 1.5rem;} }
+        @media (min-width: 768px) { .masonry-grid { column-count: 2; column-gap: 1.25rem;} }
         @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
         .masonry-item { break-inside: avoid; margin-bottom: 1rem; display: inline-block; width: 100%; }
         @media (min-width: 768px) { .masonry-item { margin-bottom: 1.5rem; } }
 
-        /* ==================== PRICING CARDS (SLEEK & GLASSMORPHISM) ==================== */
+        /* ==================== PRICING CARDS ==================== */
         .pricing-card { 
-            transition: transform 0.4s ease, border-color 1s var(--cine-ease), background-color 1s var(--cine-ease); 
+            transition: transform 0.4s ease, border-color 1s var(--cine-ease); 
+            padding: 1.25rem !important; 
+            border-radius: 1rem !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important; 
+            height: auto !important; /* Biarkan konten mengatur tinggi */
             
-            /* Premium Glassmorphism */
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5)) !important;
             border: 1px solid rgba(255, 255, 255, 0.6) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04) !important;
         }
 
         .dark-theme .pricing-card {
             background: linear-gradient(135deg, rgba(39, 39, 42, 0.7), rgba(24, 24, 27, 0.4)) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2) !important;
         }
 
-        /* Tipografi Minimalis & Mewah Khusus Harga */
-        .pricing-card h4 { font-size: 0.7rem !important; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.75rem !important;}
-        .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 1.75rem !important; font-weight: 800; letter-spacing: -0.02em; }
-        @media (min-width: 768px) { .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 2rem !important; } }
-        .pricing-card .text-2xl, .pricing-card .text-xl { font-size: 0.875rem !important; font-weight: 600; margin-left: 2px;}
-        .pricing-card p { font-size: 0.75rem !important; line-height: 1.5; color: var(--text-muted); margin-bottom: 1.25rem !important;}
+        /* Tipografi Harga Ramping dan Estetik */
+        .pricing-card h4 { font-size: 0.65rem !important; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 0.25rem !important;}
+        .pricing-card .text-4xl, .pricing-card .text-3xl { font-size: 1.5rem !important; font-weight: 800; letter-spacing: -0.02em; }
+        .pricing-card .text-2xl, .pricing-card .text-xl { font-size: 0.75rem !important; font-weight: 600; margin-left: 2px;}
+        .pricing-card p { font-size: 0.65rem !important; line-height: 1.3; color: var(--text-muted); margin-bottom: 0.75rem !important;} /* Ruang kosong dikurangi */
         
-        .pricing-card ul { margin-bottom: 1.5rem !important; flex-grow: 1; }
-        .pricing-card ul li { font-size: 0.75rem !important; padding-bottom: 0.4rem; margin-bottom: 0.6rem !important; border-bottom: 1px solid rgba(0,0,0,0.04); display: flex; align-items: flex-start; }
+        .pricing-card ul { margin-bottom: 1rem !important; flex-grow: 1; display: flex; flex-direction: column; }
+        .pricing-card ul li { font-size: 0.65rem !important; padding-bottom: 0.25rem !important; margin-bottom: 0.25rem !important; border-bottom: 1px solid rgba(0,0,0,0.04); display: flex; align-items: flex-start; }
         .dark-theme .pricing-card ul li { border-bottom-color: rgba(255,255,255,0.04); }
-        .pricing-card ul li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0 !important; }
+        .pricing-card ul li:last-child { border-bottom: none; padding-bottom: 0 !important; margin-bottom: 0 !important; }
         
-        .pricing-card button { padding: 0.75rem 1rem !important; font-size: 0.7rem !important; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px !important; margin-bottom: 1.5rem !important; }
+        .pricing-card button { padding: 0.6rem 1rem !important; font-size: 0.65rem !important; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px !important; margin-top: auto !important; margin-bottom: 0.75rem !important; width: 100% !important; }
 
-        .pricing-card:hover { transform: translateY(-5px); }
+        .pricing-card:hover { transform: translateY(-4px); }
         
-        /* Highlight Desktop */
         @media (min-width: 1024px) {
+            #pricing .grid { align-items: stretch; }
             .pricing-card.popular { 
-                border: 1px solid rgba(230, 126, 95, 0.4) !important; 
-                box-shadow: 0 15px 40px rgba(230, 126, 95, 0.1) !important; 
-                transform: scale(1.03);
+                transform: none !important; 
+                border: 1px solid rgba(230, 126, 95, 0.6) !important; 
+                box-shadow: 0 12px 30px rgba(230, 126, 95, 0.12) !important; 
             }
-            .pricing-card.popular:hover { transform: scale(1.05) translateY(-5px); }
+            .pricing-card.popular:hover { transform: translateY(-4px) !important; }
         }
 
-        /* Layout Grid Pricing Khusus Mobile: Ramping & Horizontal Scroll Terkunci */
+        /* Layout Grid Pricing Khusus Mobile (Kanan-Kiri & Anti-Scroll Vertikal di area tsb) */
         @media (max-width: 1023px) {
             #pricing .grid {
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
-                overflow-y: hidden; /* Mencegah scroll vertikal yang tidak diinginkan di dalam div */
+                overflow-y: hidden; 
                 scroll-snap-type: x mandatory;
-                scroll-padding: 0 10vw; /* Margin bayangan saat di-snap */
-                gap: 1.25rem;
-                padding: 1rem 10vw 2.5rem 10vw; /* Memberi ruang agar shadow/blur terlihat dan kartu ada di tengah */
+                scroll-padding: 0 4vw;
+                gap: 0.75rem; /* Rapatkan */
+                padding: 0.5rem 4vw 1rem 4vw; /* Ruang kosong atas/bawah ditekan */
                 -ms-overflow-style: none;
                 scrollbar-width: none;
-                -webkit-overflow-scrolling: touch; /* Kelancaran scroll di iOS */
+                -webkit-overflow-scrolling: touch;
+                align-items: stretch; 
             }
             #pricing .grid::-webkit-scrollbar { display: none; }
             
             .pricing-card {
-                flex: 0 0 75vw; /* Kartu sangat ramping di HP (75% layar) */
-                max-width: 300px;
+                flex: 0 0 auto; 
+                width: 240px !important; /* Sedikit dilebarkan dari 220 ke 240 agar text muat rapi */
                 scroll-snap-align: center;
-                min-height: auto !important;
-                padding: 1.5rem !important;
-                border-radius: 1.25rem !important;
+                height: auto !important; 
             }
 
             .pricing-card.popular { 
-                border: 1px solid rgba(230, 126, 95, 0.4) !important; 
-                box-shadow: 0 8px 30px rgba(230, 126, 95, 0.1) !important;
+                border: 1px solid rgba(230, 126, 95, 0.5) !important; 
+                box-shadow: 0 6px 20px rgba(230, 126, 95, 0.1) !important;
             }
         }
+
+        /* ==================== KATEGORI MODAL & SLIDER ==================== */
+        #category-modal-content, #modal-content-gallery {
+            max-width: 860px !important; 
+            height: auto !important; /* Menyesuaikan isi, tidak memaksakan tinggi */
+            max-height: 90vh !important; /* Batas atas tinggi */
+            padding: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            #category-modal-content, #modal-content-gallery { padding: 2rem !important; }
+        }
+
+        /* Menghilangkan ruang kosong pada kontainer judul Modal */
+        #category-modal-content .flex-col {
+            margin-bottom: 1rem !important; 
+        }
+
+        /* Penyesuaian Lebar Card Kategori agar TEPAT Muat 2 Card di HP */
+        #category-slider {
+            gap: 0.5rem !important; /* Jarak dirapatkan */
+            padding-bottom: 0.5rem !important;
+        }
+        #category-slider > div {
+            /* Perhitungan matematis: Setengah lebar kontainer dikurangi jarak (gap) */
+            flex: 0 0 calc(50% - 0.25rem) !important; 
+            min-width: auto !important;
+            width: auto !important;
+            max-width: none !important;
+            height: 220px !important; /* Tinggi kompak */
+            border-radius: 1rem !important;
+        }
+        #category-slider > div .p-5, #category-slider > div .p-6 { padding: 0.75rem !important; }
+        #category-slider h3 { font-size: 0.9rem !important; margin-bottom: 0.15rem !important; }
+        #category-slider p { font-size: 0.55rem !important; margin-bottom: 0.25rem !important; }
+        #category-slider .flex.items-center { font-size: 0.6rem !important; }
+        #category-slider .rounded-full.absolute {
+            font-size: 0.45rem !important; padding: 0.2rem 0.4rem !important; top: 0.5rem !important; right: 0.5rem !important;
+        }
         
+        @media (max-width: 767px) {
+            #category-slider { scroll-snap-type: x mandatory; }
+            #category-slider > div { scroll-snap-align: center; }
+        }
+
+        /* Mengembalikan ukuran besar untuk Desktop */
+        @media (min-width: 768px) {
+            #category-slider { gap: 1.5rem !important; padding-bottom: 1rem !important; }
+            #category-slider > div {
+                flex: none !important;
+                min-width: 240px !important; width: 240px !important;
+                height: 360px !important; border-radius: 1.5rem !important;
+            }
+            #category-slider > div .p-5, #category-slider > div .p-6 { padding: 1.5rem !important; }
+            #category-slider h3 { font-size: 1.5rem !important; margin-bottom: 0.5rem !important; }
+            #category-slider p, #category-slider .flex.items-center { font-size: 0.75rem !important; margin-bottom: 0.75rem !important; }
+            #category-slider .rounded-full.absolute { font-size: 0.6rem !important; top: 1rem !important; right: 1rem !important; padding: 0.25rem 0.75rem !important;}
+        }
+
         /* ==================== STATIC BUTTON STYLING ==================== */
         .static-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            background-color: var(--text-main);
-            color: var(--bg-main);
-            padding: 1rem 2.5rem;
-            border-radius: 9999px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            border: 1px solid transparent;
-            z-index: 50;
-            position: relative;
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            background-color: var(--text-main); color: var(--bg-main); padding: 0.8rem 2rem;
+            border-radius: 9999px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.05em; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer; border: 1px solid transparent; z-index: 50; position: relative;
         }
-        .static-btn:hover {
-            background-color: var(--accent-coral);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 15px 25px -5px rgba(230, 126, 95, 0.3);
-        }
-        
-        .dark-theme .static-btn {
-            background-color: #FFFFFF;
-            color: #000000;
-        }
-        .dark-theme .static-btn:hover {
-            background-color: var(--accent-coral);
-            color: white;
-        }
+        .static-btn:hover { background-color: var(--accent-coral); color: white; transform: scale(1.05); box-shadow: 0 10px 20px rgba(230, 126, 95, 0.2); }
+        .dark-theme .static-btn { background-color: #FFFFFF; color: #000000; }
+        .dark-theme .static-btn:hover { background-color: var(--accent-coral); color: white; }
